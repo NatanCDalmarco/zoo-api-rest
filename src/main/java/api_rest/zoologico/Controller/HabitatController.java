@@ -45,5 +45,23 @@ public class HabitatController {
         return habitatService.update(id, habitatDto);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        try {
+            habitatService.delete(id);
+            return ResponseEntity.ok("Habitat deleted successfully");
+        } catch (Exception e) {
+            return buildErrorResponse("Can't delete inexistent Habitat", e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
 
+    private ResponseEntity<Map<String, Object>> buildErrorResponse(String error, String message, HttpStatus status) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDate.now());
+        body.put("status", status);
+        body.put("error", error);
+        body.put("message", message);
+
+        return ResponseEntity.status(status).body(body);
+    }
 }
