@@ -1,11 +1,11 @@
-package api_rest.zoologico.service;
+package api_rest.zoologico.Services;
 
-import api_rest.zoologico.dto.AlimentacaoRequestDTO;
-import api_rest.zoologico.dto.AlimentacaoResponseDTO;
-import api_rest.zoologico.entity.Alimentacao;
-import api_rest.zoologico.repository.AlimentacaoRepository;
-import api_rest.zoologico.entity.Animal;
-import api_rest.zoologico.repository.AnimalRepository;
+import api_rest.zoologico.DTOs.AlimentacaoRequestDTO;
+import api_rest.zoologico.DTOs.AlimentacaoResponseDTO;
+import api_rest.zoologico.Models.Alimentacao;
+import api_rest.zoologico.Repositories.AlimentacaoRepository;
+import api_rest.zoologico.Models.Animal;
+import api_rest.zoologico.Repositories.AnimalRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

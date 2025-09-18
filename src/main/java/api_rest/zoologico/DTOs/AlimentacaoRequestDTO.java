@@ -1,4 +1,4 @@
-package api_rest.zoologico.dto;
+package api_rest.zoologico.DTOs;
 
 import java.math.BigDecimal;
 
