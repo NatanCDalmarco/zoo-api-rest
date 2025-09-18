@@ -1,9 +1,8 @@
-package api_rest.zoologico.Controller;
+package api_rest.zoologico.Controllers;
 
 
 import api_rest.zoologico.Dtos.HabitatDto;
 import api_rest.zoologico.Models.Habitat;
-import api_rest.zoologico.Models.Tipo;
 import api_rest.zoologico.Services.HabitatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
