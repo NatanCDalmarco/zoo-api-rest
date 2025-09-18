@@ -1,6 +1,6 @@
-package api_rest.zoologico.dto;
+package api_rest.zoologico.DTOs;
 
-import api_rest.zoologico.entity.Alimentacao;
+import api_rest.zoologico.Models.Alimentacao;
 import java.math.BigDecimal;
 
 public class AlimentacaoResponseDTO {

@@ -1,6 +1,6 @@
-package api_rest.zoologico.repository;
+package api_rest.zoologico.Repositories;
 
-import api_rest.zoologico.entity.Alimentacao;
+import api_rest.zoologico.Models.Alimentacao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 

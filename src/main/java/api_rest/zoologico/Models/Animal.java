@@ -1,4 +1,4 @@
-package api_rest.zoologico.entity;
+package api_rest.zoologico.Models;
 
 import jakarta.persistence.*;
 

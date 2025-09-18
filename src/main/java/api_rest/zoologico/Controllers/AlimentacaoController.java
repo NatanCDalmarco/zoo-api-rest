@@ -1,8 +1,8 @@
-package api_rest.zoologico.controller;
+package api_rest.zoologico.Controllers;
 
-import api_rest.zoologico.dto.AlimentacaoRequestDTO;
-import api_rest.zoologico.dto.AlimentacaoResponseDTO;
-import api_rest.zoologico.service.AlimentacaoService;
+import api_rest.zoologico.DTOs.AlimentacaoRequestDTO;
+import api_rest.zoologico.DTOs.AlimentacaoResponseDTO;
+import api_rest.zoologico.Services.AlimentacaoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
