@@ -1,6 +1,6 @@
 package api_rest.zoologico.Mapper;
 
-import api_rest.zoologico.Dtos.HabitatDto;
+import api_rest.zoologico.DTOs.HabitatDto;
 import api_rest.zoologico.Models.Habitat;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

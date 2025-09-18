@@ -1,8 +1,9 @@
 package api_rest.zoologico.Controllers;
 
 
-import api_rest.zoologico.Dtos.HabitatDto;
+import api_rest.zoologico.DTOs.HabitatDto;
 import api_rest.zoologico.Models.Habitat;
+import api_rest.zoologico.Models.Tipo;
 import api_rest.zoologico.Services.HabitatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,6 +35,11 @@ public class HabitatController {
         return habitatService.getById(id);
     }
 
+    @GetMapping("/tipo")
+    public List<Habitat> getByTipo(@RequestParam Tipo tipo) {
+        return habitatService.getByTipo(tipo);
+    }
+
     @PostMapping
     public Habitat create(@RequestBody HabitatDto habitatDto) {
         return habitatService.create(habitatDto);
@@ -48,9 +54,9 @@ public class HabitatController {
     public ResponseEntity<?> delete(@PathVariable Long id) {
         try {
             habitatService.delete(id);
-            return ResponseEntity.ok("Habitat deleted successfully");
+            return ResponseEntity.ok("Habitat deletado");
         } catch (Exception e) {
-            return buildErrorResponse("Can't delete inexistent Habitat", e.getMessage(), HttpStatus.NOT_FOUND);
+            return buildErrorResponse("Habitat inexistente", e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 

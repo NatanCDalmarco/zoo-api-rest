@@ -1,4 +1,4 @@
-package api_rest.zoologico.Dtos;
+package api_rest.zoologico.DTOs;
 
 import api_rest.zoologico.Models.Tipo;
 

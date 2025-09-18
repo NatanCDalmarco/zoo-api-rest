@@ -1,6 +1,6 @@
 package api_rest.zoologico.Services;
 
-import api_rest.zoologico.Dtos.HabitatDto;
+import api_rest.zoologico.DTOs.HabitatDto;
 import api_rest.zoologico.Mapper.HabitatMapper;
 import api_rest.zoologico.Models.Habitat;
 import api_rest.zoologico.Models.Tipo;
@@ -20,7 +20,7 @@ public class HabitatService {
     }
 
     public Habitat getById(Long id) {
-        return habitatRepository.findById(id).orElseThrow(() -> new RuntimeException("Habitat with id " + id + " not found"));
+        return habitatRepository.findById(id).orElseThrow(() -> new RuntimeException("Habitat de id " + id + " não encontrado"));
     }
 
     public List<Habitat> getAll() {
