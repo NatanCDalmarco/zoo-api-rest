@@ -27,6 +27,10 @@ public class HabitatService {
         return habitatRepository.findAll();
     }
 
+    public List<Habitat> getByTipo(Tipo tipo) {
+        return habitatRepository.findByTipo(tipo);
+    }
+
     public Habitat create(HabitatDto habitatDto) {
 
         Habitat habitat = habitatMapper.toEntity(habitatDto);
