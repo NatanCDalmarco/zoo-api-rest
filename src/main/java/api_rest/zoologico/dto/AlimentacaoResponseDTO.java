@@ -9,7 +9,7 @@ public class AlimentacaoResponseDTO {
     private String tipoComida;
     private BigDecimal quantidadeDiaria;
     private Long animalId;
-    private String nomeAnimal; // Campo para fornecer contexto sobre o animal
+    private String nomeAnimal;
 
      public AlimentacaoResponseDTO(Alimentacao alimentacao) {
         this.id = alimentacao.getId();

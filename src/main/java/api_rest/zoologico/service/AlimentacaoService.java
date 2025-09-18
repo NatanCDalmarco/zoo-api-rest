@@ -54,7 +54,7 @@ public class AlimentacaoService {
     }
 
     public AlimentacaoResponseDTO atualizar(Long id, AlimentacaoRequestDTO dto) {
-        // Valida se a Alimentação existe, se não, lança exceção (o Controller captura e retorna 404)
+
         if (!alimentacaoRepository.existsById(id)) {
             throw new RuntimeException("Alimentação não encontrada.");
         }
