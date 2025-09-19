@@ -1,5 +1,6 @@
 package api_rest.zoologico.Models;
 
+import api_rest.zoologico.DTOs.AlimentacaoRequestDTO;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 
@@ -18,6 +19,12 @@ public class Alimentacao {
     private Animal animal;
 
     public Alimentacao() {
+    }
+
+    public Alimentacao(AlimentacaoRequestDTO dto, Animal animal) {
+        this.tipoComida = dto.tipoComida();
+        this.quantidadeDiaria = dto.quantidadeDiaria();
+        this.animal = animal;
     }
 
     public Long getId() {

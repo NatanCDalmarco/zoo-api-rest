@@ -9,9 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -58,18 +56,13 @@ public class AnimalController {
     }
 
     @PostMapping
-    public ResponseEntity<AnimalResponseDTO> create(@RequestBody AnimalRequestDTO dto) {
-        Animal animalCriado = animalService.create(dto);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(animalCriado.getId()).toUri();
-        return ResponseEntity.created(location).body(animalMapper.toResponseDTO(animalCriado));
+    public ResponseEntity<Animal> create(@RequestBody AnimalRequestDTO dto) {
+        return ResponseEntity.ok().body(animalService.saveAnimal(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AnimalResponseDTO> update(@PathVariable Long id, @RequestBody AnimalRequestDTO dto) {
-        return animalService.update(id, dto)
-                .map(animal -> ResponseEntity.ok(animalMapper.toResponseDTO(animal)))
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Animal> update(@PathVariable Long id, @RequestBody AnimalRequestDTO dto) {
+        return ResponseEntity.ok().body(animalService.update(id, dto));
     }
 
     @DeleteMapping("/{id}")

@@ -8,6 +8,7 @@ import api_rest.zoologico.Models.Animal;
 import api_rest.zoologico.Repositories.AnimalRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,66 +23,86 @@ public class AlimentacaoService {
     @Autowired
     private AnimalRepository animalRepository;
 
-
-    private AlimentacaoResponseDTO toResponseDTO(Alimentacao alimentacao) {
-        return new AlimentacaoResponseDTO(alimentacao);
+    public void salvarALimento(AlimentacaoRequestDTO dto) {
+        Animal animal = animalRepository.getReferenceById(dto.animalId());
+        Alimentacao alimentacao = new Alimentacao(dto, animal);
+        alimentacaoRepository.save(alimentacao);
     }
 
-    private Alimentacao toEntity(AlimentacaoRequestDTO dto, Long id) {
-        Alimentacao entity = id != null ? alimentacaoRepository.findById(id).orElse(new Alimentacao()) : new Alimentacao();
-
-        Animal animal = animalRepository.findById(dto.getAnimalId())
-                .orElseThrow(() -> new RuntimeException("Animal não encontrado com ID: " + dto.getAnimalId()));
-
-        entity.setTipoComida(dto.getTipoComida());
-        entity.setQuantidadeDiaria(dto.getQuantidadeDiaria());
-        entity.setAnimal(animal);
-
-        return entity;
+    public List<Alimentacao> listarAlimentos() {
+        return alimentacaoRepository.findAll();
     }
 
+    public Alimentacao updateAlimento(AlimentacaoRequestDTO dto, Long id){
+        var found = alimentacaoRepository.getReferenceById(id);
+        Animal animal = animalRepository.getReferenceById(dto.animalId());
+        found.setAnimal(animal);
+        found.setQuantidadeDiaria(dto.quantidadeDiaria());
+        found.setTipoComida(dto.tipoComida());
 
-    public AlimentacaoResponseDTO criar(AlimentacaoRequestDTO dto) {
-        Alimentacao alimentacao = toEntity(dto, null);
-        alimentacao = alimentacaoRepository.save(alimentacao);
-        return toResponseDTO(alimentacao);
+        return found;
     }
 
-    public List<AlimentacaoResponseDTO> listarTodos() {
-        return alimentacaoRepository.findAll().stream()
-                .map(this::toResponseDTO)
-                .collect(Collectors.toList());
-    }
-
-    public AlimentacaoResponseDTO atualizar(Long id, AlimentacaoRequestDTO dto) {
-
-        if (!alimentacaoRepository.existsById(id)) {
-            throw new RuntimeException("Alimentação não encontrada.");
-        }
-
-        Alimentacao alimentacao = toEntity(dto, id);
-        alimentacao.setId(id);
-        alimentacao = alimentacaoRepository.save(alimentacao);
-        return toResponseDTO(alimentacao);
-    }
-
-    public void deletar(Long id) {
-        if (!alimentacaoRepository.existsById(id)) {
-            throw new RuntimeException("Alimentação não encontrada.");
-        }
+    public void deleteAlimento(Long id) {
         alimentacaoRepository.deleteById(id);
     }
 
 
-    public List<AlimentacaoResponseDTO> buscarPorTipoComida(String tipoComida) {
-        return alimentacaoRepository.findByTipoComidaContainingIgnoreCase(tipoComida).stream()
-                .map(this::toResponseDTO)
-                .collect(Collectors.toList());
-    }
-
-    public List<AlimentacaoResponseDTO> buscarPorAnimalId(Long animalId) {
-        return alimentacaoRepository.findByAnimalId(animalId).stream()
-                .map(this::toResponseDTO)
-                .collect(Collectors.toList());
-    }
+//    private AlimentacaoResponseDTO toResponseDTO(Alimentacao alimentacao) {
+//        return new AlimentacaoResponseDTO(alimentacao);
+//    }
+//
+//    private Alimentacao toEntity(AlimentacaoRequestDTO dto, Long id) {
+//        Alimentacao entity = id != null ? alimentacaoRepository.findById(id).orElse(new Alimentacao()) : new Alimentacao();
+//
+//        Animal animal = animalRepository.findById(dto.animalId())
+//                .orElseThrow(() -> new RuntimeException("Animal não encontrado com ID: " + dto.animalId()));
+//
+//        entity.setTipoComida(dto.tipoComida());
+//        entity.setQuantidadeDiaria(dto.quantidadeDiaria());
+//        entity.setAnimal(animal);
+//
+//        return entity;
+//    }
+//    public void criar(AlimentacaoRequestDTO dto) {
+//        Animal animal = animalRepository.getReferenceById(dto.animalId());
+//        Alimentacao alimentacao = new Alimentacao(dto, animal);
+//        alimentacaoRepository.save(alimentacao);
+//    }
+//
+//    public List<Alimentacao> listarTodos() {
+//        return alimentacaoRepository.findAll();
+//    }
+//
+//    public AlimentacaoResponseDTO atualizar(Long id, AlimentacaoRequestDTO dto) {
+//
+//        if (!alimentacaoRepository.existsById(id)) {
+//            throw new RuntimeException("Alimentação não encontrada.");
+//        }
+//
+//        Alimentacao alimentacao = toEntity(dto, id);
+//        alimentacao.setId(id);
+//        alimentacao = alimentacaoRepository.save(alimentacao);
+//        return toResponseDTO(alimentacao);
+//    }
+//
+//    public void deletar(Long id) {
+//        if (!alimentacaoRepository.existsById(id)) {
+//            throw new RuntimeException("Alimentação não encontrada.");
+//        }
+//        alimentacaoRepository.deleteById(id);
+//    }
+//
+//
+//    public List<AlimentacaoResponseDTO> buscarPorTipoComida(String tipoComida) {
+//        return alimentacaoRepository.findByTipoComidaContainingIgnoreCase(tipoComida).stream()
+//                .map(this::toResponseDTO)
+//                .collect(Collectors.toList());
+//    }
+//
+//    public List<AlimentacaoResponseDTO> buscarPorAnimalId(Long animalId) {
+//        return alimentacaoRepository.findByAnimalId(animalId).stream()
+//                .map(this::toResponseDTO)
+//                .collect(Collectors.toList());
+//    }
 }

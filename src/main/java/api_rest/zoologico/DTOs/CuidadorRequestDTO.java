@@ -1,10 +1,8 @@
 package api_rest.zoologico.DTOs;
 
-import lombok.Data;
 
-@Data
-public class CuidadorRequestDTO {
-    private String nome;
-    private String especialidade;
-    private String turno;
-}
+public record CuidadorRequestDTO (
+    String nome,
+    String especialidade,
+    String turno
+){}
