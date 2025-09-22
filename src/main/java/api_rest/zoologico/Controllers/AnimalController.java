@@ -3,8 +3,6 @@ package api_rest.zoologico.Controllers;
 import api_rest.zoologico.DTOs.AnimalRequestDTO;
 import api_rest.zoologico.Models.Animal;
 import api_rest.zoologico.Services.AnimalService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,36 +14,34 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/animals")
-@RequiredArgsConstructor
 public class AnimalController {
 
-    @Autowired
-    private AnimalService animalService;
+    private final AnimalService animalService;
+
+    public AnimalController(AnimalService animalService) {
+        this.animalService = animalService;
+    }
 
     @GetMapping
     public ResponseEntity<List<Animal>> getAll() {
-        List<Animal> animais = animalService.getAll();
-        return ResponseEntity.ok().body(animais);
+        return ResponseEntity.ok().body(animalService.getAll());
     }
 
     @GetMapping("/species")
-    public ResponseEntity<List<Animal>> getBySpecies(@RequestParam String value) {
-        List<Animal> animais = animalService.getBySpecies(value);
-        return ResponseEntity.ok().body(animais);
+    public ResponseEntity<List<Animal>> getBySpecies(@RequestParam String data) {
+        return ResponseEntity.ok().body(animalService.getBySpecies(data));
     }
 
     @GetMapping("/name")
-    public ResponseEntity<List<Animal>> getByName(@RequestParam String value) {
-        List<Animal> animais = animalService.getByName(value);
-        return ResponseEntity.ok().body(animais);
+    public ResponseEntity<List<Animal>> getByName(@RequestParam String data) {
+        return ResponseEntity.ok().body(animalService.getByName(data));
     }
 
     @GetMapping("/age")
     public ResponseEntity<List<Animal>> getByAge(
             @RequestParam Integer min,
             @RequestParam Integer max) {
-        List<Animal> animais = animalService.getByAge(min, max);
-        return ResponseEntity.ok().body(animais);
+        return ResponseEntity.ok().body(animalService.getByAge(min, max));
     }
 
     @GetMapping("/{id}")
@@ -54,23 +50,19 @@ public class AnimalController {
     }
 
     @PostMapping
-    public ResponseEntity<Animal> create(@RequestBody AnimalRequestDTO dto) {
-        return ResponseEntity.ok().body(animalService.create(dto));
+    public ResponseEntity<Animal> create(@RequestBody AnimalRequestDTO data) {
+        return ResponseEntity.ok().body(animalService.create(data));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Animal> update(@PathVariable Long id, @RequestBody AnimalRequestDTO dto) {
-        return ResponseEntity.ok().body(animalService.update(id, dto));
+    public ResponseEntity<Animal> update(@PathVariable Long id, @RequestBody AnimalRequestDTO data) {
+        return ResponseEntity.ok().body(animalService.update(id, data));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        try {
             animalService.delete(id);
-            return ResponseEntity.ok("Animal deletado com sucesso.");
-        } catch (Exception e) {
-            return buildErrorResponse("Animal não encontrado", e.getMessage(), HttpStatus.NOT_FOUND);
-        }
+            return ResponseEntity.noContent().build();
     }
 
     private ResponseEntity<Map<String, Object>> buildErrorResponse(String error, String message, HttpStatus status) {

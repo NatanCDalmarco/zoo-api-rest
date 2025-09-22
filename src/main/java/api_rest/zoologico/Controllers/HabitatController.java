@@ -20,44 +20,38 @@ import java.util.Map;
 public class HabitatController {
     private final HabitatService habitatService;
 
-    @Autowired
     public HabitatController(HabitatService habitatService) {
         this.habitatService = habitatService;
     }
 
     @GetMapping
-    public List<Habitat> getAll() {
-        return habitatService.getAll();
+    public ResponseEntity<List<Habitat>> getAll() {
+        return ResponseEntity.ok().body(habitatService.getAll());
     }
 
     @GetMapping("/{id}")
-    public Habitat getById(@PathVariable Long id) {
-        return habitatService.getById(id);
+    public ResponseEntity<Habitat> getById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(habitatService.getById(id));
     }
 
     @GetMapping("/tipo")
-    public List<Habitat> getByTipo(@RequestParam Tipo tipo) {
-        return habitatService.getByTipo(tipo);
+    public ResponseEntity<List<Habitat>> getByTipo(@RequestParam Tipo tipo) {
+        return ResponseEntity.ok().body(habitatService.getByTipo(tipo));
     }
 
     @PostMapping
-    public Habitat create(@RequestBody HabitatDto habitatDto) {
-        return habitatService.create(habitatDto);
+    public ResponseEntity<Habitat> create(@RequestBody HabitatDto habitatDto) {
+        return ResponseEntity.ok().body(habitatService.create(habitatDto));
     }
 
     @PutMapping("/{id}")
-    public Habitat update(@RequestBody HabitatDto habitatDto,  @PathVariable Long id) {
-        return habitatService.update(id, habitatDto);
+    public ResponseEntity<Habitat> update(@RequestBody HabitatDto habitatDto, @PathVariable Long id) {
+        return ResponseEntity.ok().body(habitatService.update(id, habitatDto));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        try {
-            habitatService.delete(id);
-            return ResponseEntity.ok("Habitat deletado");
-        } catch (Exception e) {
-            return buildErrorResponse("Habitat inexistente", e.getMessage(), HttpStatus.NOT_FOUND);
-        }
+        return ResponseEntity.noContent().build();
     }
 
     private ResponseEntity<Map<String, Object>> buildErrorResponse(String error, String message, HttpStatus status) {

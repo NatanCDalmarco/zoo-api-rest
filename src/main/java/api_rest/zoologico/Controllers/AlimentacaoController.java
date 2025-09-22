@@ -14,25 +14,27 @@ import java.util.List;
 @RequestMapping("/api/alimentacoes")
 public class AlimentacaoController {
 
-    @Autowired
-    private AlimentacaoService alimentacaoService;
+    private final AlimentacaoService alimentacaoService;
+
+    public AlimentacaoController(AlimentacaoService alimentacaoService) {
+        this.alimentacaoService = alimentacaoService;
+    }
 
     @PostMapping
-    public ResponseEntity postAlimento(@RequestBody AlimentacaoRequestDTO alimentacao){
-        alimentacaoService.create(alimentacao);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<?> postAlimento(@RequestBody AlimentacaoRequestDTO alimentacao){
+        return ResponseEntity.ok().body(alimentacaoService.create(alimentacao));
     }
     @GetMapping
     public ResponseEntity<List<Alimentacao>> getAllAlimento(){
         return ResponseEntity.ok().body(alimentacaoService.getAll());
     }
     @PutMapping("/{id}")
-    public ResponseEntity putAlimento(@RequestBody AlimentacaoRequestDTO dto, @PathVariable Long id){
+    public ResponseEntity<?> putAlimento(@RequestBody AlimentacaoRequestDTO dto, @PathVariable Long id){
         return ResponseEntity.ok().body(alimentacaoService.update(dto, id));
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteAlimento(@PathVariable Long id){
+    public ResponseEntity<?> deleteAlimento(@PathVariable Long id){
         alimentacaoService.delete(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }

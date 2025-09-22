@@ -7,7 +7,6 @@ import api_rest.zoologico.Repositories.CuidadorRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CuidadorService {
@@ -40,7 +39,7 @@ public class CuidadorService {
     public Cuidador create(Cuidador cuidador) {
         return cuidadorRepository.save(cuidador);
     }
-    public Cuidador atualizar(Long id, CuidadorRequestDTO dto) {
+    public Cuidador update(Long id, CuidadorRequestDTO dto) {
         Cuidador cuidador = cuidadorRepository.getReferenceById(id);
         cuidadorMapper.updateEntityFromDto(dto, cuidador);
         return cuidadorRepository.save(cuidador);

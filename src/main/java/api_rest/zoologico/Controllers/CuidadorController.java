@@ -40,8 +40,7 @@ public class CuidadorController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Cuidador> update(@PathVariable Long id, @RequestBody CuidadorRequestDTO cuidador) {
-        cuidadorService.atualizar(id, cuidador);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(cuidadorService.update(id, cuidador));
     }
 
     @DeleteMapping("/{id}")
