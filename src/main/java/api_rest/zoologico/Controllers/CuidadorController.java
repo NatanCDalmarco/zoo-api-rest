@@ -1,5 +1,6 @@
 package api_rest.zoologico.Controllers;
 
+import api_rest.zoologico.DTOs.CuidadorRequestDTO;
 import api_rest.zoologico.Models.Cuidador;
 import api_rest.zoologico.Services.CuidadorService;
 import lombok.RequiredArgsConstructor;
@@ -16,39 +17,36 @@ public class CuidadorController {
     private final CuidadorService cuidadorService;
 
     @GetMapping
-    public List<Cuidador> listar(
-            @RequestParam(required = false) String especialidade,
-            @RequestParam(required = false) String turno
-    ) {
-        return cuidadorService.listar(especialidade, turno);
+    @RequestMapping("/turno")
+    public ResponseEntity<List<Cuidador>> listByTurno(@RequestParam(required = true) String turno) {
+        return ResponseEntity.ok().body(cuidadorService.getByTurno(turno));
+    }
+
+    @GetMapping
+    @RequestMapping("/especilidade")
+    public ResponseEntity<List<Cuidador>> listByEspeciaidade(@RequestParam(required = true) String especialidade) {
+        return ResponseEntity.ok().body(cuidadorService.getByEspecialidade(especialidade));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Cuidador> buscarPorId(@PathVariable Long id) {
-        return cuidadorService.buscarPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Cuidador> findById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(cuidadorService.getById(id));
     }
 
     @PostMapping
-    public Cuidador criar(@RequestBody Cuidador cuidador) {
-        return cuidadorService.criar(cuidador);
+    public ResponseEntity<Cuidador> create(@RequestBody Cuidador cuidador) {
+        return ResponseEntity.ok().body(cuidadorService.create(cuidador));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Cuidador> atualizar(@PathVariable Long id, @RequestBody Cuidador cuidador) {
-        return cuidadorService.atualizar(id, cuidador)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Cuidador> update(@PathVariable Long id, @RequestBody CuidadorRequestDTO cuidador) {
+        cuidadorService.atualizar(id, cuidador);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletar(@PathVariable Long id) {
-        String mensagem = cuidadorService.deletar(id);
-
-        if (mensagem.contains("não encontrado")) {
-            return ResponseEntity.status(404).body(mensagem);
-        }
-        return ResponseEntity.ok(mensagem);
+    public ResponseEntity<String> delete(@PathVariable Long id) {
+        cuidadorService.deletar(id);
+        return ResponseEntity.noContent().build();
     }
 }

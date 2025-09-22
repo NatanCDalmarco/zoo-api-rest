@@ -1,4 +1,4 @@
-package api_rest.zoologico.config;
+package api_rest.zoologico.Configs;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

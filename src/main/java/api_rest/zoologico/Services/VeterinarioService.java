@@ -1,6 +1,7 @@
 package api_rest.zoologico.Services;
 
 import api_rest.zoologico.DTOs.VeterinarioDTO;
+import api_rest.zoologico.Mapper.VeterinarioMapper;
 import api_rest.zoologico.Models.EspecialidadeVeterinario;
 import api_rest.zoologico.Models.Veterinario;
 import api_rest.zoologico.Repositories.VeterinarioRepository;
@@ -11,42 +12,37 @@ import java.util.List;
 @Service
 public class VeterinarioService {
     private final VeterinarioRepository veterinarioRepository;
+    private final VeterinarioMapper veterinarioMapper;
 
-    public VeterinarioService(VeterinarioRepository veterinarioRepository) {
+    public VeterinarioService(VeterinarioRepository veterinarioRepository, VeterinarioMapper veterinarioMapper) {
         this.veterinarioRepository = veterinarioRepository;
+        this.veterinarioMapper = veterinarioMapper;
     }
 
-    public List<Veterinario> listarVeterinarios() {
+    public List<Veterinario> getAll() {
         return veterinarioRepository.findAll();
     }
         
-    public Veterinario buscarVeterinarioPorID(Long id) {
+    public Veterinario findById(Long id) {
         return veterinarioRepository.findById(id).orElseThrow(()-> new RuntimeException("Não há Veterinário com esse ID: " + id));
     }
 
-    public List<Veterinario> buscarVeterinarioPorEspecializacao (EspecialidadeVeterinario especialidadeVeterinario) {
+    public List<Veterinario> getByEspecialidade(EspecialidadeVeterinario especialidadeVeterinario) {
         return veterinarioRepository.findByEspecialidadeVeterinario(especialidadeVeterinario);
     }
 
-    public Veterinario atualizarVeterinario(Long id, VeterinarioDTO veterinario) {
-        Veterinario veterinarioAtualizado = buscarVeterinarioPorID(id);
-        if (veterinario.nome() != null) veterinarioAtualizado.setNome(veterinario.nome());
-        if (veterinario.crvm() != null) veterinarioAtualizado.setCRVM(veterinario.crvm());
-        if (veterinario.especialidade() != null) veterinarioAtualizado.setEspecialidadeVeterinario(veterinario.especialidade());
-
-        return veterinarioRepository.save(veterinarioAtualizado);
+    public Veterinario update(Long id, VeterinarioDTO dto) {
+        Veterinario veterinario = findById(id);
+        veterinarioMapper.updateEntityFromDto(dto, veterinario);
+        return veterinarioRepository.save(veterinario);
     }
 
-    public Veterinario cadastrarVeterinario(VeterinarioDTO veterinario){
-        if (veterinario.crvm() ==  null || veterinario.crvm().isBlank()){
-            throw new RuntimeException("O CRVM deve seer obrigatório!");
-        }
-        Veterinario vet = new Veterinario(veterinario);
-
-        return veterinarioRepository.save(vet);
+    public Veterinario create(VeterinarioDTO dto){
+        Veterinario veterinario = new Veterinario(dto);
+        return veterinarioRepository.save(veterinario);
     }
 
-    public void removerVeterinario(Long id) {
+    public void delete(Long id) {
         veterinarioRepository.deleteById(id);
     }
 }

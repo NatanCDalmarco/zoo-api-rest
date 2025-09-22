@@ -1,9 +1,9 @@
 package api_rest.zoologico.Services;
 
 import api_rest.zoologico.DTOs.CuidadorRequestDTO;
+import api_rest.zoologico.Mapper.CuidadorMapper;
 import api_rest.zoologico.Models.Cuidador;
-import api_rest.zoologico.Repositories.CuidadorRepository;import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import api_rest.zoologico.Repositories.CuidadorRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,56 +12,41 @@ import java.util.Optional;
 @Service
 public class CuidadorService {
 
-    @Autowired
-    private  CuidadorRepository cuidadorRepository;
+    private final CuidadorRepository cuidadorRepository;
+    private final CuidadorMapper cuidadorMapper;
 
-    public void criar(CuidadorRequestDTO dto) {
+    public CuidadorService(CuidadorRepository cuidadorRepository, CuidadorMapper cuidadorMapper) {
+        this.cuidadorRepository = cuidadorRepository;
+        this.cuidadorMapper = cuidadorMapper;
+    }
+
+    public Cuidador create(CuidadorRequestDTO dto) {
         Cuidador cuidador = new Cuidador(dto);
-        try {
-            Cuidador salvo = cuidadorRepository.save(cuidador);
-        } catch (RuntimeException e) {
-            throw new RuntimeException("Erro no dados enviados: " + e);
-        }
-
-    }
-
-    // Listar com filtros
-    public List<Cuidador> listar(String especialidade, String turno) {
-        if (especialidade != null && turno != null) {
-            return cuidadorRepository.findByEspecialidadeOrTurno(especialidade, turno);
-        }
-        if (especialidade != null) {
-            return cuidadorRepository.findByEspecialidade(especialidade);
-        }
-        if (turno != null) {
-            return cuidadorRepository.findByTurno(turno);
-        }
-        return cuidadorRepository.findAll();
-    }
-
-    // buscar por Id
-    public Optional<Cuidador> buscarPorId(Long id) {
-        return cuidadorRepository.findById(id);
-    }
-
-    // criar cuidador
-    public Cuidador criar(Cuidador cuidador) {
         return cuidadorRepository.save(cuidador);
     }
 
-    // atualizar cuidador
-    public Optional<Cuidador> atualizar(Long id, Cuidador cuidador) {
-        return cuidadorRepository.findById(id).map(c -> {
-            cuidador.setId(id);
-            return cuidadorRepository.save(cuidador);
-        });
+    public List<Cuidador> getByTurno(String turno) {
+        return cuidadorRepository.findByTurno(turno);
     }
-
-    // deletar cuidador
-    public String deletar(Long id) {
-        return cuidadorRepository.findById(id).map(c -> {
-            cuidadorRepository.deleteById(id);
-            return "Cuidador " + c.getNome() + " (ID: " + id + ") foi excluído com sucesso.";
-        }).orElse("Cuidador com ID " + id + " não encontrado.");
+    public List<Cuidador> getAll() {
+        return cuidadorRepository.findAll();
+    }
+    public List<Cuidador> getByEspecialidade(String especialidade) {
+        return cuidadorRepository.findByEspecialidade(especialidade);
+    }
+    public Cuidador getById(Long id) {
+        return cuidadorRepository.getReferenceById(id);
+    }
+    public Cuidador create(Cuidador cuidador) {
+        return cuidadorRepository.save(cuidador);
+    }
+    public Cuidador atualizar(Long id, CuidadorRequestDTO dto) {
+        Cuidador cuidador = cuidadorRepository.getReferenceById(id);
+        cuidadorMapper.updateEntityFromDto(dto, cuidador);
+        return cuidadorRepository.save(cuidador);
+    }
+    public void deletar(Long id) {
+        Cuidador cuidador = cuidadorRepository.findById(id).orElseThrow();
+        cuidadorRepository.delete(cuidador);
     }
 }

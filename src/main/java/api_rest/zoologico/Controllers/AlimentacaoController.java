@@ -19,20 +19,20 @@ public class AlimentacaoController {
 
     @PostMapping
     public ResponseEntity postAlimento(@RequestBody AlimentacaoRequestDTO alimentacao){
-        alimentacaoService.salvarALimento(alimentacao);
+        alimentacaoService.create(alimentacao);
         return ResponseEntity.ok().build();
     }
     @GetMapping
     public ResponseEntity<List<Alimentacao>> getAllAlimento(){
-        return ResponseEntity.ok().body(alimentacaoService.listarAlimentos());
+        return ResponseEntity.ok().body(alimentacaoService.getAll());
     }
     @PutMapping("/{id}")
     public ResponseEntity putAlimento(@RequestBody AlimentacaoRequestDTO dto, @PathVariable Long id){
-        return ResponseEntity.ok().body(alimentacaoService.updateAlimento(dto, id));
+        return ResponseEntity.ok().body(alimentacaoService.update(dto, id));
     }
     @DeleteMapping("/{id}")
     public ResponseEntity deleteAlimento(@PathVariable Long id){
-        alimentacaoService.deleteAlimento(id);
+        alimentacaoService.delete(id);
         return ResponseEntity.ok().build();
     }
 }

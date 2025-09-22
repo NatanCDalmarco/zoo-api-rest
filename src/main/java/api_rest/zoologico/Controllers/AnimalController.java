@@ -13,7 +13,6 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/animals")
@@ -56,7 +55,7 @@ public class AnimalController {
 
     @PostMapping
     public ResponseEntity<Animal> create(@RequestBody AnimalRequestDTO dto) {
-        return ResponseEntity.ok().body(animalService.saveAnimal(dto));
+        return ResponseEntity.ok().body(animalService.create(dto));
     }
 
     @PutMapping("/{id}")

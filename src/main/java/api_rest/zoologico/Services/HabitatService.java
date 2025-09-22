@@ -11,8 +11,8 @@ import java.util.List;
 
 @Service
 public class HabitatService {
-    HabitatRepository habitatRepository;
-    HabitatMapper habitatMapper;
+    private final HabitatRepository habitatRepository;
+    private final HabitatMapper habitatMapper;
 
     public HabitatService(HabitatRepository habitatRepository, HabitatMapper habitatMapper) {
         this.habitatRepository = habitatRepository;
@@ -32,16 +32,13 @@ public class HabitatService {
     }
 
     public Habitat create(HabitatDto habitatDto) {
-
         Habitat habitat = habitatMapper.toEntity(habitatDto);
-
         return habitatRepository.save(habitat);
     }
 
     public Habitat update(Long id,HabitatDto habitatDto) {
         Habitat habitat = getById(id);
         habitatMapper.updateEntityFromDto(habitatDto, habitat);
-
         return habitatRepository.save(habitat);
     }
 

@@ -4,7 +4,6 @@ import api_rest.zoologico.DTOs.VeterinarioDTO;
 import api_rest.zoologico.Models.EspecialidadeVeterinario;
 import api_rest.zoologico.Models.Veterinario;
 import api_rest.zoologico.Services.VeterinarioService;
-import jakarta.servlet.ServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,14 +23,14 @@ public class VeterinarioController {
 
     @GetMapping
     public List<Veterinario> findAll() {
-        return veterinarioService.listarVeterinarios();
+        return veterinarioService.getAll();
     }
 
     @GetMapping("especialidade/{especialidade}")
     public ResponseEntity<?> findByEspecialidade(@PathVariable String especialidade) {
         try {
             EspecialidadeVeterinario enumEspecialidade = EspecialidadeVeterinario.valueOf(especialidade.toUpperCase());
-            List<Veterinario> veterinarios = veterinarioService.buscarVeterinarioPorEspecializacao(enumEspecialidade);
+            List<Veterinario> veterinarios = veterinarioService.getByEspecialidade(enumEspecialidade);
             return ResponseEntity.ok(veterinarios);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(
@@ -44,21 +43,21 @@ public class VeterinarioController {
 
     @GetMapping("{id}")
     public Veterinario buscarPorID(@PathVariable Long id) {
-        return veterinarioService.buscarVeterinarioPorID(id);
+        return veterinarioService.findById(id);
     }
 
     @PutMapping("{id}")
     public Veterinario updateVeterinario(@PathVariable Long id, @RequestBody VeterinarioDTO veterinario) {
-        return veterinarioService.atualizarVeterinario(id, veterinario);
+        return veterinarioService.update(id, veterinario);
     }
 
     @PostMapping
     public Veterinario salvar(@RequestBody VeterinarioDTO veterinario) {
-        return veterinarioService.cadastrarVeterinario(veterinario);
+        return veterinarioService.create(veterinario);
     }
 
     @DeleteMapping("{id}")
     public void deletarVeterinario(@PathVariable Long id) {
-        veterinarioService.removerVeterinario(id);
+        veterinarioService.delete(id);
     }
 }

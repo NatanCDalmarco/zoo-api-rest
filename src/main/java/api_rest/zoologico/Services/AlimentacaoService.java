@@ -1,6 +1,7 @@
 package api_rest.zoologico.Services;
 
 import api_rest.zoologico.DTOs.AlimentacaoRequestDTO;
+import api_rest.zoologico.Mapper.AlimentacaoMapper;
 import api_rest.zoologico.Models.Alimentacao;
 import api_rest.zoologico.Repositories.AlimentacaoRepository;
 import api_rest.zoologico.Models.Animal;
@@ -12,38 +13,34 @@ import java.util.List;
 
 @Service
 public class AlimentacaoService {
-
     private final AlimentacaoRepository alimentacaoRepository;
     private final AnimalRepository animalRepository;
+    private final AlimentacaoMapper alimentacaoMapper;
 
-    public AlimentacaoService(AlimentacaoRepository alimentacaoRepository, AnimalRepository animalRepository) {
+    public AlimentacaoService(AlimentacaoRepository alimentacaoRepository, AnimalRepository animalRepository, AlimentacaoMapper alimentacaoMapper) {
         this.alimentacaoRepository = alimentacaoRepository;
         this.animalRepository = animalRepository;
+        this.alimentacaoMapper = alimentacaoMapper;
     }
 
-    public void salvarALimento(AlimentacaoRequestDTO dto) {
-        Animal animal = animalRepository.findById(dto.animalId())
-                .orElseThrow(() -> new RuntimeException("Animal com ID " + dto.animalId() + " não encontrado."));
+    public Alimentacao create(AlimentacaoRequestDTO dto) {
+        Animal animal = animalRepository.getReferenceById(dto.animalId());
         Alimentacao alimentacao = new Alimentacao(dto, animal);
-        alimentacaoRepository.save(alimentacao);
+        return alimentacaoRepository.save(alimentacao);
     }
 
-    public List<Alimentacao> listarAlimentos() {
+    public List<Alimentacao> getAll() {
         return alimentacaoRepository.findAll();
     }
 
-    public Alimentacao updateAlimento(AlimentacaoRequestDTO dto, Long id) {
-        Alimentacao found = alimentacaoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Registro de alimentação com ID " + id + " não encontrado."));
-        Animal animal = animalRepository.findById(dto.animalId())
-                .orElseThrow(() -> new RuntimeException("Animal com ID " + dto.animalId() + " não encontrado."));
-        found.setAnimal(animal);
-        found.setQuantidadeDiaria(dto.quantidadeDiaria());
-        found.setTipoComida(dto.tipoComida());
-        return alimentacaoRepository.save(found);
+    public Alimentacao update(AlimentacaoRequestDTO dto, Long id) {
+        Alimentacao alimentacao = alimentacaoRepository.getReferenceById(id);
+        alimentacaoMapper.updateEntityFromDto(dto, alimentacao);
+        return alimentacaoRepository.save(alimentacao);
     }
 
-    public void deleteAlimento(Long id) {
-        alimentacaoRepository.deleteById(id);
+    public void delete(Long id) {
+        Alimentacao alimentacao = alimentacaoRepository.getReferenceById(id);
+        alimentacaoRepository.delete(alimentacao);
     }
 }
