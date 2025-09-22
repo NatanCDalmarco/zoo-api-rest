@@ -21,6 +21,12 @@ public class AnimalService {
     @Autowired
     private CuidadorRepository cuidadorRepository;
 
+    public AnimalService(AnimalRepository animalRepository, HabitatRepository habitatRepository, CuidadorRepository cuidadorRepository) {
+        this.animalRepository = animalRepository;
+        this.habitatRepository = habitatRepository;
+        this.cuidadorRepository = cuidadorRepository;
+    }
+
     public List<Animal> getAll() {
         return animalRepository.findAll();
     }
@@ -39,16 +45,23 @@ public class AnimalService {
 
     public Animal update(Long id, AnimalRequestDTO dto) {
 
-        Animal animal = animalRepository.getReferenceById(id);
-        Cuidador cuidador = cuidadorRepository.getReferenceById(dto.cuidadorId());
-        Habitat habitat = habitatRepository.getReferenceById(dto.cuidadorId());
-        animal.setCuidador(cuidador);
-        if(dto.habitatId() != null) animal.setHabitat(habitat);
+        Animal animal = getById(id);
+
+        if (dto.cuidadorId() != null) {
+            Cuidador cuidador = cuidadorRepository.findById(dto.cuidadorId())
+                    .orElseThrow(() -> new RuntimeException("Cuidador com ID " + dto.cuidadorId() + " não encontrado."));
+            animal.setCuidador(cuidador);
+        }
+        if(dto.habitatId() != null) {
+            Habitat habitat = habitatRepository.findById(dto.habitatId())
+                    .orElseThrow(() -> new RuntimeException("Habitat com ID " + dto.habitatId() + " não encontrado."));
+            animal.setHabitat(habitat);
+        }
         if(dto.nome() != null) animal.setNome(dto.nome());
         animal.setIdade(dto.idade());
         if(dto.especie() != null) animal.setEspecie(dto.especie());
 
-        return animal;
+        return animalRepository.save(animal);
     }
 
     public void delete(Long id) {
@@ -56,10 +69,9 @@ public class AnimalService {
     }
 
     public Animal saveAnimal(AnimalRequestDTO dto) {
-        Habitat habitat = habitatRepository.getReferenceById(dto.habitatId());
-        Cuidador cuidador = cuidadorRepository.getReferenceById(dto.cuidadorId());
+        Habitat habitat = habitatRepository.findById(dto.habitatId()).orElseThrow(() -> new RuntimeException("Habitat com ID " + dto.habitatId() + " não encontrado."));
+        Cuidador cuidador = cuidadorRepository.findById(dto.cuidadorId()).orElseThrow(() -> new RuntimeException("Cuidador com ID " + dto.cuidadorId() + " não encontrado."));
         Animal animal = new Animal(dto, habitat, cuidador);
-        animalRepository.save(animal);
-        return animal;
+        return animalRepository.save(animal);
     }
 }

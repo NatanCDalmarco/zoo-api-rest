@@ -2,8 +2,7 @@ package api_rest.zoologico.Services;
 
 import api_rest.zoologico.DTOs.CuidadorRequestDTO;
 import api_rest.zoologico.Models.Cuidador;
-import api_rest.zoologico.Repositories.CuidadorRepository;
-import lombok.RequiredArgsConstructor;
+import api_rest.zoologico.Repositories.CuidadorRepository;import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -62,8 +61,7 @@ public class CuidadorService {
     public String deletar(Long id) {
         return cuidadorRepository.findById(id).map(c -> {
             cuidadorRepository.deleteById(id);
-            return "Cuidador '" + c.getNome() + "' (ID: " + id + ") foi excluído com sucesso.";
+            return "Cuidador " + c.getNome() + " (ID: " + id + ") foi excluído com sucesso.";
         }).orElse("Cuidador com ID " + id + " não encontrado.");
     }
 }
-
