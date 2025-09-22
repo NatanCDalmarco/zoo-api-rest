@@ -1,5 +1,6 @@
 package api_rest.zoologico.Models;
 
+import api_rest.zoologico.DTOs.CuidadorRequestDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,4 +23,10 @@ public class Cuidador {
     private String especialidade;
 
     private String turno;
+
+    public Cuidador(CuidadorRequestDTO dto) {
+        this.nome = dto.nome();
+        this.especialidade = dto.especialidade();
+        this.turno = dto.turno();
+    }
 }

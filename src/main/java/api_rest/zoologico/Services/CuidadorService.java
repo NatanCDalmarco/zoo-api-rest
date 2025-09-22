@@ -1,36 +1,28 @@
 package api_rest.zoologico.Services;
 
 import api_rest.zoologico.DTOs.CuidadorRequestDTO;
-import api_rest.zoologico.DTOs.CuidadorResponseDTO;
 import api_rest.zoologico.Models.Cuidador;
-import api_rest.zoologico.Repositories.CuidadorRepository;
-import lombok.RequiredArgsConstructor;
+import api_rest.zoologico.Repositories.CuidadorRepository;import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class CuidadorService {
 
-    private final CuidadorRepository cuidadorRepository;
+    @Autowired
+    private  CuidadorRepository cuidadorRepository;
 
-    public CuidadorResponseDTO criar(CuidadorRequestDTO dto) {
-        Cuidador cuidador = new Cuidador();
-        cuidador.setNome(dto.getNome());
-        cuidador.setEspecialidade(dto.getEspecialidade());
-        cuidador.setTurno(dto.getTurno());
+    public void criar(CuidadorRequestDTO dto) {
+        Cuidador cuidador = new Cuidador(dto);
+        try {
+            Cuidador salvo = cuidadorRepository.save(cuidador);
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Erro no dados enviados: " + e);
+        }
 
-        Cuidador salvo = cuidadorRepository.save(cuidador);
-
-        CuidadorResponseDTO response = new CuidadorResponseDTO();
-        response.setId(salvo.getId());
-        response.setNome(salvo.getNome());
-        response.setEspecialidade(salvo.getEspecialidade());
-        response.setTurno(salvo.getTurno());
-
-        return response;
     }
 
     // Listar com filtros
@@ -69,8 +61,7 @@ public class CuidadorService {
     public String deletar(Long id) {
         return cuidadorRepository.findById(id).map(c -> {
             cuidadorRepository.deleteById(id);
-            return "Cuidador '" + c.getNome() + "' (ID: " + id + ") foi excluído com sucesso.";
+            return "Cuidador " + c.getNome() + " (ID: " + id + ") foi excluído com sucesso.";
         }).orElse("Cuidador com ID " + id + " não encontrado.");
     }
 }
-
