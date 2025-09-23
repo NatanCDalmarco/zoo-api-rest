@@ -1,4 +1,4 @@
-package api_rest.zoologico.Infra.Configs;
+package api_rest.zoologico.Infra.Security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
