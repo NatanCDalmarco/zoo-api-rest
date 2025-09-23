@@ -12,7 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/login")
+@RequestMapping("/login") // Alterado para /auth/login para corresponder ao caminho do frontend
 public class LoginController {
     private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;

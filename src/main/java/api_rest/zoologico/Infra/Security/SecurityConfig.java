@@ -28,13 +28,11 @@ public class SecurityConfig {
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(req -> {
-                    // Permite acesso público ao endpoint de login e à documentação do Swagger
                     req.requestMatchers(HttpMethod.POST, "/login").permitAll();
+                    req.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();// Libera o preflight do CORS
                     req.requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll();
-                    // Exige que qualquer outra requisição seja autenticada
                     req.anyRequest().authenticated();
                 })
-                // Adiciona nosso filtro customizado para ser executado antes do filtro padrão do Spring
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
