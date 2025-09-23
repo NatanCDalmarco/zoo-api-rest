@@ -10,5 +10,4 @@ public record HabitatDto (
         LocalDate dueDate,
         Tipo tipo
 ){
-
 }
