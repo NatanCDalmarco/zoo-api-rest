@@ -27,7 +27,7 @@ public class AnimalController {
         return ResponseEntity.ok().body(animalService.getAll());
     }
 
-    @GetMapping("/species")
+    @GetMapping("/especies")
     public ResponseEntity<List<Animal>> getBySpecies(@RequestParam String data) {
         return ResponseEntity.ok().body(animalService.getBySpecies(data));
     }
@@ -37,7 +37,7 @@ public class AnimalController {
         return ResponseEntity.ok().body(animalService.getByName(data));
     }
 
-    @GetMapping("/age")
+    @GetMapping("/idade")
     public ResponseEntity<List<Animal>> getByAge(
             @RequestParam Integer min,
             @RequestParam Integer max) {

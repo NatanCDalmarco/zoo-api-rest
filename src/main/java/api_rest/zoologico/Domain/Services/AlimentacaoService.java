@@ -17,9 +17,8 @@ public class AlimentacaoService {
     private final AlimentacaoRepository alimentacaoRepository;
     private final AnimalRepository animalRepository;
     private final AlimentacaoMapper alimentacaoMapper;
-    private final EmailService emailService; // <-- ADICIONE ESTA LINHA
+    private final EmailService emailService;
 
-    // Modifique o construtor para incluir o EmailService
     public AlimentacaoService(AlimentacaoRepository alimentacaoRepository, AnimalRepository animalRepository, AlimentacaoMapper alimentacaoMapper, EmailService emailService) {
         this.alimentacaoRepository = alimentacaoRepository;
         this.animalRepository = animalRepository;
@@ -42,7 +41,7 @@ public class AlimentacaoService {
 
             String assunto = "Nova Alimentação Cadastrada para " + nomeAnimal;
             String corpo = String.format(
-                    "Olá %s,\n\nUma nova rotina de alimentação foi cadastrada para o animal '%s' (espécie: %s), que está sob seus cuidados.\n\nDetalhes:\n- Comida: %s\n- Quantidade Diária: %s\n\nAtenciosamente,\nSistema do Zoológico.",
+                    "Olá %s,\n\nUma nova rotina de alimentação foi cadastrada para o animal '%s' (espécie: %s), que está sob seus cuidados.\n\nDetalhes:\n- Comida: %s\n- Quantidade Diária: %s\n\nAtt,\nZoológico WBLNF.",
                     nomeCuidador,
                     nomeAnimal,
                     animal.getEspecie(),

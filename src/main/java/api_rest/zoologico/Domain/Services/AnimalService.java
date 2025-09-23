@@ -19,12 +19,16 @@ public class AnimalService {
     private final HabitatRepository habitatRepository;
     private final CuidadorRepository cuidadorRepository;
     private final AnimalMapper animalMapper;
+    private final HabitatService habitatService;
 
-    public AnimalService(AnimalRepository animalRepository, HabitatRepository habitatRepository, CuidadorRepository cuidadorRepository, AnimalMapper animalMapper) {
+
+    public AnimalService(AnimalRepository animalRepository, HabitatRepository habitatRepository, CuidadorRepository cuidadorRepository, AnimalMapper animalMapper, HabitatService habitatService) {
         this.animalRepository = animalRepository;
         this.habitatRepository = habitatRepository;
         this.cuidadorRepository = cuidadorRepository;
         this.animalMapper = animalMapper;
+        this.habitatService = habitatService;
+
     }
 
     public List<Animal> getAll() {
@@ -40,11 +44,19 @@ public class AnimalService {
         return animalRepository.findByIdadeBetween(idadeMin, idadeMax);
     }
     public Animal getById(Long id) {
-        return animalRepository.getReferenceById(id);
+        return animalRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Animal com ID " + id + " não encontrado."));
     }
 
     public Animal update(Long id, AnimalRequestDTO dto) {
         Animal animal = getById(id);
+        if (dto.habitatId() != null && !dto.habitatId().equals(animal.getHabitat().getId())) {
+            habitatService.verificarCapacidade(dto.habitatId());
+            Habitat novoHabitat = habitatRepository.findById(dto.habitatId())
+                    .orElseThrow(() -> new RuntimeException("Habitat com ID " + dto.habitatId() + " não encontrado."));
+            animal.setHabitat(novoHabitat);
+        }
+
         animalMapper.updateEntityFromDto(dto, animal);
         return animalRepository.save(animal);
     }
@@ -56,6 +68,8 @@ public class AnimalService {
     public Animal create(AnimalRequestDTO dto) {
         Habitat habitat = habitatRepository.findById(dto.habitatId()).orElseThrow(() -> new RuntimeException("Habitat com ID " + dto.habitatId() + " não encontrado."));
         Cuidador cuidador = cuidadorRepository.findById(dto.cuidadorId()).orElseThrow(() -> new RuntimeException("Cuidador com ID " + dto.cuidadorId() + " não encontrado."));
+
+        habitatService.verificarCapacidade(dto.habitatId());
         Animal animal = new Animal(dto, habitat, cuidador);
         return animalRepository.save(animal);
     }
