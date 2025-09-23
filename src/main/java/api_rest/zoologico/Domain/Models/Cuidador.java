@@ -19,14 +19,14 @@ public class Cuidador {
     private Long id;
 
     private String nome;
-
     private String especialidade;
-
     private String turno;
+    private String email;
 
     public Cuidador(CuidadorRequestDTO dto) {
         this.nome = dto.nome();
         this.especialidade = dto.especialidade();
         this.turno = dto.turno();
+        this.email = dto.email();
     }
 }
