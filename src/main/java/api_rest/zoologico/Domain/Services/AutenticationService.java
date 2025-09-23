@@ -1,6 +1,5 @@
 package api_rest.zoologico.Domain.Services;
 
-import api_rest.zoologico.Domain.Models.Admin;
 import api_rest.zoologico.Domain.Repositories.AdminRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
