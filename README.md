@@ -13,6 +13,7 @@ Esta API fornece uma interface para realizar operações de CRUD (Criar, Ler, At
 -   **Spring Data JPA (Hibernate)**
 -   **Spring Security**
 -   **Maven / Gradle**
+-   **Spring Mail**
 -   **Banco de Dados (ex: H2, PostgreSQL)**
 -   **Lombok**
 
@@ -132,6 +133,7 @@ A camada de serviço (`@Service`) implementa as seguintes regras de negócio par
     -   Não é possível adicionar um animal a um habitat que já atingiu sua capacidade máxima.
 -   **Cuidadores:**
     -   O nome do cuidador é obrigatório.
+    -   Ao ser criado, um e-mail de boas-vindas é enviado para o cuidador.
 -   **Habitats:**
     -   O nome e o tipo do habitat são obrigatórios.
     -   A capacidade máxima deve ser um número positivo.
@@ -158,7 +160,8 @@ Utilizamos DTOs para desacoplar a camada da API da camada de modelo de dados e p
 {
   "nome": "João Silva",
   "especialidade": "Felinos",
-  "turno": "Manhã"
+  "turno": "Manhã",
+  "email": "joao.silva@example.com"
 }
 ```
 
