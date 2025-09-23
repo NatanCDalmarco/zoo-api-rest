@@ -17,9 +17,8 @@ public class AlimentacaoService {
     private final AlimentacaoRepository alimentacaoRepository;
     private final AnimalRepository animalRepository;
     private final AlimentacaoMapper alimentacaoMapper;
-    private final EmailService emailService; // <-- ADICIONE ESTA LINHA
+    private final EmailService emailService;
 
-    // Modifique o construtor para incluir o EmailService
     public AlimentacaoService(AlimentacaoRepository alimentacaoRepository, AnimalRepository animalRepository, AlimentacaoMapper alimentacaoMapper, EmailService emailService) {
         this.alimentacaoRepository = alimentacaoRepository;
         this.animalRepository = animalRepository;
