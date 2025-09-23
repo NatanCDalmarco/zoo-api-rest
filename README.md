@@ -2,11 +2,11 @@
 
 Uma API REST completa para o gerenciamento de um zoológico, desenvolvida com Java e Spring Boot.
 
-## 📖 Visão Geral
+## Visão Geral
 
 Esta API fornece uma interface para realizar operações de CRUD (Criar, Ler, Atualizar e Deletar) nas principais entidades de um zoológico, como Animais, Cuidadores, Habitats e Veterinários. Ela foi projetada seguindo as melhores práticas de desenvolvimento de APIs REST, incluindo o uso de DTOs, tratamento de exceções e segurança baseada em tokens.
 
-## ✨ Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 -   **Java 17+**
 -   **Spring Boot 3+**
@@ -17,7 +17,7 @@ Esta API fornece uma interface para realizar operações de CRUD (Criar, Ler, At
 -   **Banco de Dados (ex: H2, PostgreSQL)**
 -   **Lombok**
 
-## 🚀 Como Executar o Projeto
+## Como Executar o Projeto
 
 1.  **Clone o repositório:**
     ```bash
@@ -38,7 +38,7 @@ Esta API fornece uma interface para realizar operações de CRUD (Criar, Ler, At
 4.  **Acesse a API:**
     -   A API estará disponível em `http://localhost:8080`.
 
-## 📁 Estrutura do Projeto
+## Estrutura do Projeto
 
 O projeto segue uma arquitetura em camadas para garantir a separação de responsabilidades e a manutenibilidade.
 
@@ -57,7 +57,7 @@ com.example.zoo
     └── config          // Configurações de segurança (Spring Security, JWT)
 ```
 
-## 🔐 Segurança
+## Segurança
 
 A API utiliza **JSON Web Tokens (JWT)** para autenticação e autorização, garantindo que apenas usuários autenticados possam acessar os endpoints.
 
@@ -140,7 +140,7 @@ A camada de serviço (`@Service`) implementa as seguintes regras de negócio par
 -   **Veterinários:**
     -   O `crvm` (Conselho Regional de Medicina Veterinária) deve ser único para cada veterinário.
 
-## 📦 Data Transfer Objects (DTOs)
+## Data Transfer Objects (DTOs)
 
 Utilizamos DTOs para desacoplar a camada da API da camada de modelo de dados e para expor apenas as informações necessárias.
 
@@ -183,7 +183,7 @@ Utilizamos DTOs para desacoplar a camada da API da camada de modelo de dados e p
 }
 ```
 
-## ⚠️ Tratamento de Erros
+## Tratamento de Erros
 
 A API utiliza códigos de status HTTP padrão para indicar o sucesso ou falha de uma requisição.
 
